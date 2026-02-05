@@ -1,74 +1,39 @@
-# Task 2: End-to-End Customer Churn Prediction Pipeline
+# Customer Churn Prediction Pipeline (End-to-End)
 
 ## 📌 Project Overview
-Customer churn is a critical problem for subscription-based businesses, especially in industries like telecommunications. Manually identifying customers who are likely to leave is inefficient and often too late.
-
-This project implements a **production-ready, end-to-end machine learning pipeline** that predicts the likelihood of customer churn. The solution bundles **data preprocessing and model inference** into a single, deployable pipeline, ensuring consistency, scalability, and ease of integration with real-world systems.
-
----
+This project implements a **production-ready machine learning pipeline** to predict customer attrition. By bundling data preprocessing and model inference into a single object, the system ensures consistency between training and real-world deployment.
 
 ## 🎯 Problem Statement & Objective
+* **Problem:** Manual identification of at-risk customers is reactive and inefficient.
+* **Objective:** Develop a modular pipeline to handle raw data automatically and predict churn likelihood accurately using the **IBM Telco Customer Churn Dataset**.
 
-### Problem
-Customer attrition (churn) significantly impacts revenue and growth in subscription-based businesses. Traditional, manual approaches to identifying high-risk customers are reactive and inefficient.
-
-### Objective
-To build a **robust and modular machine learning pipeline** that:
-- Accurately predicts whether a customer is likely to churn.
-- Handles raw data automatically without manual preprocessing.
-- Is suitable for deployment in production environments.
-
----
-
-## 📂 Dataset Loading & Preprocessing
-
-### Dataset Source
-- **IBM Telco Customer Churn Dataset** (Raw CSV format)
-
-### Data Cleaning
-- Converted `TotalCharges` from object type to numeric.
-- Handled missing values appropriately.
-- Dropped non-predictive identifiers such as `customerID` to reduce noise.
-
-### Feature Engineering (Scikit-learn Pipeline)
-To ensure consistent preprocessing during training and inference, a unified pipeline was used:
-
-#### Numerical Features
-- Applied `StandardScaler` to normalize features such as:
-  - `tenure`
-  - `MonthlyCharges`
-
-#### Categorical Features
-- Used `OneHotEncoder` to convert categorical variables (e.g., contract type, internet service) into binary vectors.
-
-#### ColumnTransformer
-- Combined numerical and categorical transformations into a single `ColumnTransformer`.
-- Ensured identical preprocessing for both training and test data.
-
----
-
-## 🤖 Model Development & Training
-
-### Algorithm
-- **Random Forest Classifier**
-- Chosen for its:
-  - Robustness to outliers
-  - Ability to model non-linear relationships
-  - Strong performance on tabular data
-
-### Hyperparameter Tuning
-- Performed using `GridSearchCV` with **5-fold cross-validation**.
-
-### Best Hyperparameters
-- `n_estimators`: 50  
-- `max_depth`: 10  
-
-### Model Serialization
-- The final optimized pipeline was saved using **Joblib** as:
-
-```bash
-churn_pipeline_model.joblib
+## 📂 Data Engineering & Preprocessing
+* **Data Cleaning:** Handled missing values, converted `TotalCharges` to numeric, and removed non-predictive `customerID`.
+* **Feature Engineering (via Scikit-learn Pipeline):**
+    * **Numerical:** `StandardScaler` for `tenure` and `MonthlyCharges`.
+    * **Categorical:** `OneHotEncoder` for service and contract types.
+    * **Consistency:** Used `ColumnTransformer` to ensure identical transformations for training and inference.
 
 
 
+## 🤖 Model Development
+* **Algorithm:** Random Forest Classifier.
+* **Optimization:** `GridSearchCV` with 5-fold cross-validation.
+* **Best Parameters:** `max_depth: 10`, `n_estimators: 50`.
+* **Serialization:** Exported the full pipeline as `churn_pipeline_model.joblib`.
 
+## 📊 Evaluation & Metrics
+* **Accuracy:** ~79%
+* **Precision (Churn):** 0.62
+* **Recall (Churn):** 0.49
+* **F1-Score (Churn):** 0.55
+
+## 📈 Key Insights
+* **Feature Importance:** **Contract Type**, **Tenure**, and **Monthly Charges** are the strongest predictors.
+* **Contract Risk:** Month-to-month contracts correlate with the highest churn rates.
+* **Tenure Risk:** New customers are most vulnerable, suggesting a need for better onboarding.
+
+
+
+## 🚀 Production Readiness
+The use of the **Scikit-learn Pipeline API** allows this model to accept raw, uncleaned data and return predictions instantly, making it ready for integration into web or mobile applications.
